@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Daily Routine Match | CECyT 46 América Libre</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2b3d 0%, #1b4f6e 100%);
+            min-height: 100vh;
+            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-wrapper {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ENTRANCE OVERLAY */
+        .entrance-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 30, 40, 0.96);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .entrance-card {
+            background: linear-gradient(145deg, #fff7e8, #ffefd0);
+            border-radius: 72px;
+            padding: 40px 32px;
+            text-align: center;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.4);
+            animation: floatIn 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes floatIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(40px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .entrance-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .inst-badge {
+            background: #2c5e6e;
+            padding: 12px 28px;
+            border-radius: 60px;
+            color: #ffefcf;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .entrance-card h1 {
+            font-size: 2.5rem;
+            color: #c25d2e;
+            margin: 15px 0;
+        }
+
+        .entrance-card p {
+            font-size: 1.2rem;
+            color: #2d545e;
+            margin-bottom: 30px;
+        }
+
+        .start-btn {
+            background: #ff9f4a;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            color: #2c2b26;
+        }
+
+        .start-btn:hover {
+            background: #f07e1a;
+            transform: scale(1.02);
+        }
+
+        /* MAIN GAME CONTAINER */
+        .game-container {
+            background: rgba(255, 248, 235, 0.97);
+            border-radius: 56px;
+            overflow: hidden;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            background: #fae6c3;
+            padding: 16px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            border-bottom: 3px solid #ffb347;
+        }
+
+        .logo-area {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .official-logo {
+            background: #2c5e3f;
+            color: #ffefcf;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats-panel {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            background: #fff2e0;
+            padding: 5px 18px;
+            border-radius: 48px;
+        }
+
+        .stat {
+            background: #2c5e6e;
+            padding: 5px 18px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .stars-container {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: #ffedd5;
+            padding: 5px 20px;
+            border-radius: 40px;
+        }
+
+        .star {
+            font-size: 1.6rem;
+            color: #ccc;
+            transition: color 0.2s;
+        }
+
+        .star.active {
+            color: #ffc107;
+            text-shadow: 0 0 4px #ffa500;
+        }
+
+        .level-selector {
+            background: #ffedd5;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 2px dashed #f4c27a;
+        }
+
+        .level-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 18px;
+            margin: 20px 0;
+        }
+
+        .level-btn {
+            background: #f5bc70;
+            border: none;
+            font-weight: bold;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+        }
+
+        .level-btn.active {
+            background: #e67e22;
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .info-panel {
+            background: #f9e2b7;
+            padding: 12px;
+            border-radius: 48px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .game-board {
+            padding: 30px 20px;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 18px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 170px;
+            aspect-ratio: 3 / 4;
+            background: linear-gradient(145deg, #fff3e2, #ffe0bc);
+            border-radius: 28px;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 2px solid #ffd19b;
+            overflow: hidden;
+        }
+
+        .card.flipped, .card.matched {
+            background: #fef7e9;
+            transform: scale(0.98);
+        }
+
+        .card.matched {
+            background: #cbe6c1;
+            cursor: default;
+            opacity: 0.85;
+            border-color: #5f9e6e;
+        }
+
+        .card-content {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .image-card-content img {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: contain;
+            border-radius: 16px;
+        }
+
+        .word-card-content .word-text {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: #f2e0c0;
+            padding: 10px 14px;
+            border-radius: 60px;
+            color: #3a4f5c;
+            text-transform: capitalize;
+        }
+
+        .card-back {
+            font-size: 2.5rem;
+            color: #c2823a;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0 15px;
+        }
+
+        .btn-action {
+            background: #ffa143;
+            border: none;
+            padding: 12px 32px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .btn-action.next {
+            background: #4c9f70;
+            color: white;
+        }
+
+        .btn-action.retry {
+            background: #e67e22;
+            color: white;
+        }
+
+        .btn-action:hover {
+            transform: scale(0.97);
+            filter: brightness(1.05);
+        }
+
+        .message-area {
+            background: #ffefdb;
+            border-radius: 60px;
+            padding: 12px 20px;
+            text-align: center;
+            margin: 10px auto;
+            width: fit-content;
+            font-weight: 500;
+        }
+
+        footer {
+            background: #e0c8a3;
+            text-align: center;
+            padding: 14px;
+            font-size: 0.75rem;
+            color: #3f2e1c;
+        }
+
+        @media (max-width: 600px) {
+            .memory-grid {
+                gap: 12px;
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            }
+            .word-card-content .word-text {
+                font-size: 0.9rem;
+            }
+            .image-card-content img {
+                max-width: 70px;
+                max-height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="game-wrapper">
+    <!-- ENTRADA CON LOGO ÚNICO CECyT 46 - ruta images.jpg -->
+    <div class="entrance-overlay" id="entranceOverlay">
+        <div class="entrance-card">
+            <div class="entrance-logo">
+                <div class="inst-badge">
+                    <img src="images.jpg" alt="CECyT 46" style="height: 45px; width: auto; border-radius: 25px; background: white; padding: 5px;" onerror="this.src='https://placehold.co/100x60?text=Logo'"> 
+                    CECyT 46 "América Libre"
+                </div>
+            </div>
+            <h1>✨ DAILY ROUTINE ✨</h1>
+            <p>Relaciona la <strong>IMAGEN real</strong> con la <strong>PALABRA en INGLÉS</strong><br>
+            🎧 Audio en cada tarjeta | ⭐ Gana estrellas según tu tiempo</p>
+            <button class="start-btn" id="startGameBtn">🎮 COMENZAR →</button>
+        </div>
+    </div>
+
+    <!-- JUEGO PRINCIPAL -->
+    <div class="game-container" id="gameContainer" style="display: none;">
+        <div class="header">
+            <div class="logo-area">
+                <img src="images.jpg" alt="CECyT 46" style="height: 55px; border-radius: 30px; background: white; padding: 6px 12px;" onerror="this.src='https://placehold.co/100x60?text=CECyT'">
+                <div class="official-logo">🏛️ CECyT 46 "América Libre"</div>
+                <div class="stars-container" id="starsContainer">
+                    <span class="star" id="star1">★</span>
+                    <span class="star" id="star2">★</span>
+                    <span class="star" id="star3">★</span>
+                </div>
+            </div>
+            <div class="stats-panel">
+                <div class="stat">⏱️ <span id="timerDisplay">00:00</span></div>
+                <div class="stat">🔄 <span id="movesCount">0</span></div>
+                <div class="stat">⭐ NIVEL <span id="levelNumber">1</span></div>
+            </div>
+        </div>
+
+        <div class="level-selector" id="levelSelectorArea">
+            <div style="font-weight: bold; font-size: 1.3rem;">🌟 SELECCIONA UN NIVEL PARA JUGAR 🌟</div>
+            <div class="level-buttons" id="levelButtons"></div>
+            <div class="info-panel">💡 Cada nivel tiene más pares. Completa el juego y obtén 1 a 3 estrellas según tu velocidad.</div>
+        </div>
+
+        <div class="game-board" id="gameBoardArea" style="display: none;">
+            <div class="memory-grid" id="memoryGrid"></div>
+            <div class="action-buttons" id="actionButtons">
+                <button class="btn-action retry" id="retryBtn">🔄 REINTENTAR NIVEL</button>
+                <button class="btn-action next" id="nextLevelBtn" style="display: none;">⭐ SIGUIENTE NIVEL ⭐</button>
+            </div>
+            <div id="gameMessage" class="message-area">👉 Selecciona un nivel para empezar a jugar</div>
+        </div>
+        <footer>🔊 Cada carta reproduce su pronunciación | CECyT 46 - Usa tus propias imágenes en la carpeta /images/</footer>
+    </div>
+</div>
+
+<script>
+    // ========== VOCABULARIO AMPLIADO ==========
+   
+    const FULL_VOCABULARY = [
+        { word: "Cook", imgPath: "cook.png", audioText: "Cook" },
+        { word: "Listen to music", imgPath: "music.jpg", audioText: "Listen to music" },
+        { word: "Go shopping", imgPath: "shoping.jpg", audioText: "Go shopping" },
+        { word: "Exercise", imgPath: "exercise.jpg", audioText: "Exercise" },
+        { word: "Do Homework", imgPath: "homework.jpg", audioText: "Do Homework" },
+        { word: "Wash the dishes", imgPath: "dishes.jpg", audioText: "Wash the dishes" },
+        { word: "Brush teeth", imgPath: "bruth.jpg", audioText: "Brush teeth" },
+        { word: "Take a shower", imgPath: "shower.jpg", audioText: "Take a shower" },
+        { word: "Make the bed", imgPath: "bed.jpg", audioText: "Make the bed" },
+        { word: "Walk the dog", imgPath: "dog.jpg", audioText: "Walk the dog" },
+        { word: "Read a book", imgPath: "read.jpg", audioText: "Read a book" },
+        { word: "Wake up", imgPath: "up.jpg", audioText: "Wake up" },
+        { word: "Have breakfast", imgPath: "breakfast.jpg", audioText: "Have breakfast" },
+        { word: "Get dressed", imgPath: "dressed.jpg", audioText: "Get dressed" },
+        { word: "Go to work", imgPath: "work.jpg", audioText: "Go to work" },
+        { word: "Drive a car", imgPath: "car.jpg", audioText: "Drive a car" },
+        { word: "Take a nap", imgPath: "nap.jpg", audioText: "Take a nap" },
+        { word: "Watch TV", imgPath: "tv.jpg", audioText: "Watch TV" },
+        { word: "Play video games", imgPath: "games.jpg", audioText: "Play video games" },
+        { word: "Meditate", imgPath: "meditate.jpg", audioText: "Meditate" }
+    ];
+
+    // Configuración de niveles: cada nivel toma una porción del vocabulario
+    // Nivel 1: 5 pares, Nivel 2: 8 pares, Nivel 3: 11 pares, Nivel 4: 14 pares, Nivel 5: 18 pares
+    const LEVEL_CONFIG = {
+        1: { pairs: 5, startIdx: 0 },
+        2: { pairs: 8, startIdx: 0 },
+        3: { pairs: 11, startIdx: 0 },
+        4: { pairs: 14, startIdx: 0 },
+        5: { pairs: 18, startIdx: 0 }
+    };
+
+    function getVocabularyByLevel(level) {
+        const config = LEVEL_CONFIG[level];
+        const pairsNeeded = config.pairs;
+        return FULL_VOCABULARY.slice(0, pairsNeeded);
+    }
+
+    // Variables globales
+    let currentLevel = 1;
+    let currentCards = [];
+    let moves = 0;
+    let matchedPairs = 0;
+    let totalPairs = 0;
+    let timerSeconds = 0;
+    let timerInterval = null;
+    let lockBoard = false;
+    let firstCardIndex = null;
+    let secondCardIndex = null;
+    let gameActive = false;
+    let gameFinished = false;
+
+    // DOM
+    const entranceOverlay = document.getElementById("entranceOverlay");
+    const gameContainer = document.getElementById("gameContainer");
+    const startBtn = document.getElementById("startGameBtn");
+    const levelButtonsContainer = document.getElementById("levelButtons");
+    const levelSelectorArea = document.getElementById("levelSelectorArea");
+    const gameBoardArea = document.getElementById("gameBoardArea");
+    const memoryGrid = document.getElementById("memoryGrid");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const movesSpan = document.getElementById("movesCount");
+    const levelSpan = document.getElementById("levelNumber");
+    const gameMessageDiv = document.getElementById("gameMessage");
+    const retryBtn = document.getElementById("retryBtn");
+    const nextLevelBtn = document.getElementById("nextLevelBtn");
+    const star1 = document.getElementById("star1");
+    const star2 = document.getElementById("star2");
+    const star3 = document.getElementById("star3");
+
+    // Audio
+    function speakText(text) {
+        if (!text) return;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-US";
+        utterance.rate = 0.9;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // Construir mazo: una carta con imagen (usando imgPath) y su pareja con la palabra
+    function buildDeck(level) {
+        const vocab = getVocabularyByLevel(level);
+        let deck = [];
+        vocab.forEach((item, idx) => {
+            // Carta de IMAGEN (muestra la foto real)
+            deck.push({
+                id: `img-${idx}`,
+                type: "image",
+                pairId: idx,
+                wordObj: item,
+                matched: false,
+                flipped: false,
+                imgSrc: item.imgPath,
+                wordText: item.word
+            });
+            // Carta de PALABRA (texto en inglés)
+            deck.push({
+                id: `word-${idx}`,
+                type: "word",
+                pairId: idx,
+                wordObj: item,
+                matched: false,
+                flipped: false,
+                wordText: item.word
+            });
+        });
+        totalPairs = deck.length / 2;
+        matchedPairs = 0;
+        return shuffleArray(deck);
+    }
+
+    function renderGame() {
+        memoryGrid.innerHTML = "";
+        currentCards.forEach((card, idx) => {
+            const cardDiv = document.createElement("div");
+            cardDiv.className = "card";
+            if (card.matched) cardDiv.classList.add("matched");
+            if (card.flipped) cardDiv.classList.add("flipped");
+            const innerDiv = document.createElement("div");
+            innerDiv.className = "card-content";
+            
+            if (card.flipped || card.matched) {
+                if (card.type === "image") {
+                    innerDiv.classList.add("image-card-content");
+                    innerDiv.innerHTML = `
+                        <img src="${card.imgSrc}" alt="${card.wordText}" onerror="this.src='https://placehold.co/120x120?text=No+Image'">
+                        <div style="font-size:0.7rem; background:#eeddbb; padding:4px 8px; border-radius:40px;">📷 ${card.wordText}</div>
+                    `;
+                } else {
+                    innerDiv.classList.add("word-card-content");
+                    innerDiv.innerHTML = `
+                        <div class="word-text">📖 ${card.wordText}</div>
+                        <div style="font-size:0.7rem;">🔊 listen</div>
+                    `;
+                }
+            } else {
+                innerDiv.innerHTML = `<div class="card-back">❓❓<br><span style="font-size:0.6rem;">Daily</span></div>`;
+            }
+            cardDiv.appendChild(innerDiv);
+            cardDiv.addEventListener("click", () => onCardClick(idx));
+            memoryGrid.appendChild(cardDiv);
+        });
+        movesSpan.innerText = moves;
+        levelSpan.innerText = currentLevel;
+        updateTimerUI();
+    }
+
+    function updateTimerUI() {
+        let mins = Math.floor(timerSeconds / 60);
+        let secs = timerSeconds % 60;
+        timerDisplay.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+    }
+
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (gameActive && !lockBoard && matchedPairs < totalPairs) {
+                timerSeconds++;
+                updateTimerUI();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+    }
+
+    function calculateStars(seconds, totalPairsCount) {
+        const idealPerPair = 2.8;
+        const twoStarLimit = 4.5;
+        const expectedIdeal = totalPairsCount * idealPerPair;
+        const expectedTwo = totalPairsCount * twoStarLimit;
+        if (seconds <= expectedIdeal) return 3;
+        if (seconds <= expectedTwo) return 2;
+        return 1;
+    }
+
+    function updateStarsUI(stars) {
+        star1.classList.remove("active");
+        star2.classList.remove("active");
+        star3.classList.remove("active");
+        if (stars >= 1) star1.classList.add("active");
+        if (stars >= 2) star2.classList.add("active");
+        if (stars >= 3) star3.classList.add("active");
+    }
+
+    function checkWin() {
+        if (matchedPairs === totalPairs && totalPairs > 0 && gameActive) {
+            stopTimer();
+            gameActive = false;
+            gameFinished = true;
+            const starsEarned = calculateStars(timerSeconds, totalPairs);
+            updateStarsUI(starsEarned);
+            let starMessage = starsEarned === 3 ? "🌟🌟🌟 EXCELENTE! 3 estrellas" : (starsEarned === 2 ? "🌟🌟 Buen trabajo! 2 estrellas" : "🌟 Bien! 1 estrella");
+            gameMessageDiv.innerHTML = `🎉 NIVEL COMPLETADO! 🎉<br>Tiempo: ${formatTime(timerSeconds)} | Movimientos: ${moves}<br>${starMessage}`;
+            speakText(`Level completed! You earned ${starsEarned} stars`);
+            if (currentLevel < 5) {
+                nextLevelBtn.style.display = "inline-block";
+            } else {
+                nextLevelBtn.style.display = "none";
+                gameMessageDiv.innerHTML += `<br>🏆 ¡FELICIDADES! Completaste todos los niveles. 🏆`;
+            }
+            retryBtn.innerText = "🔄 REINTENTAR NIVEL";
+        }
+    }
+
+    function formatTime(sec) {
+        let m = Math.floor(sec/60);
+        let s = sec%60;
+        return `${m}m ${s}s`;
+    }
+
+    async function onCardClick(idx) {
+        if (!gameActive || lockBoard || gameFinished) return;
+        const card = currentCards[idx];
+        if (card.matched || card.flipped) return;
+        if (firstCardIndex !== null && secondCardIndex !== null) return;
+
+        card.flipped = true;
+        renderGame();
+        speakText(card.wordObj.audioText);
+
+        if (firstCardIndex === null) {
+            firstCardIndex = idx;
+        } else if (secondCardIndex === null && firstCardIndex !== idx) {
+            secondCardIndex = idx;
+            moves++;
+            movesSpan.innerText = moves;
+            lockBoard = true;
+            checkMatchLogic();
+        }
+    }
+
+    function checkMatchLogic() {
+        const cardA = currentCards[firstCardIndex];
+        const cardB = currentCards[secondCardIndex];
+        const isMatch = (cardA.pairId === cardB.pairId);
+        if (isMatch) {
+            cardA.matched = true;
+            cardB.matched = true;
+            matchedPairs++;
+            firstCardIndex = null;
+            secondCardIndex = null;
+            lockBoard = false;
+            renderGame();
+            speakText("Good match!");
+            checkWin();
+        } else {
+            setTimeout(() => {
+                if (currentCards[firstCardIndex]) currentCards[firstCardIndex].flipped = false;
+                if (currentCards[secondCardIndex]) currentCards[secondCardIndex].flipped = false;
+                firstCardIndex = null;
+                secondCardIndex = null;
+                lockBoard = false;
+                renderGame();
+            }, 700);
+        }
+    }
+
+    function startLevel(level) {
+        stopTimer();
+        currentLevel = level;
+        gameActive = true;
+        gameFinished = false;
+        moves = 0;
+        timerSeconds = 0;
+        matchedPairs = 0;
+        firstCardIndex = null;
+        secondCardIndex = null;
+        lockBoard = false;
+        currentCards = buildDeck(currentLevel);
+        totalPairs = currentCards.length / 2;
+        updateStarsUI(0);
+        renderGame();
+        startTimer();
+        nextLevelBtn.style.display = "none";
+        retryBtn.innerText = "🔄 REINTENTAR NIVEL";
+        gameMessageDiv.innerHTML = `🎯 Nivel ${currentLevel} - ${totalPairs} pares. Relaciona imagen real con palabra ¡Buena suerte!`;
+        levelSpan.innerText = currentLevel;
+        gameBoardArea.style.display = "block";
+        levelSelectorArea.style.display = "none";
+    }
+
+    function retryLevel() {
+        stopTimer();
+        gameActive = true;
+        gameFinished = false;
+        moves = 0;
+        timerSeconds = 0;
+        matchedPairs = 0;
+        firstCardIndex = null;
+        secondCardIndex = null;
+        lockBoard = false;
+        currentCards = buildDeck(currentLevel);
+        totalPairs = currentCards.length / 2;
+        updateStarsUI(0);
+        renderGame();
+        startTimer();
+        nextLevelBtn.style.display = "none";
+        gameMessageDiv.innerHTML = `🔄 Reiniciaste Nivel ${currentLevel}. ¡A conseguir estrellas!`;
+    }
+
+    function nextLevel() {
+        if (currentLevel < 5) {
+            startLevel(currentLevel + 1);
+        } else {
+            gameMessageDiv.innerHTML = "🏆 ¡Ya eres un experto! Juega de nuevo presionando Reintentar.";
+        }
+    }
+
+    function buildLevelSelector() {
+        levelButtonsContainer.innerHTML = "";
+        const levelInfo = {1:5, 2:8, 3:11, 4:14, 5:18};
+        for (let i = 1; i <= 5; i++) {
+            const btn = document.createElement("button");
+            btn.className = "level-btn";
+            btn.innerText = `⭐ NIVEL ${i} (${levelInfo[i]} pares)`;
+            btn.addEventListener("click", () => startLevel(i));
+            levelButtonsContainer.appendChild(btn);
+        }
+    }
+
+    startBtn.addEventListener("click", () => {
+        entranceOverlay.style.opacity = "0";
+        setTimeout(() => {
+            entranceOverlay.style.display = "none";
+            gameContainer.style.display = "block";
+            buildLevelSelector();
+            levelSelectorArea.style.display = "block";
+            gameBoardArea.style.display = "none";
+            gameMessageDiv.innerHTML = "👉 Elige un nivel para comenzar a jugar";
+        }, 500);
+    });
+
+    retryBtn.addEventListener("click", retryLevel);
+    nextLevelBtn.addEventListener("click", nextLevel);
+    gameContainer.style.display = "none";
+</script>
+</body>
+</html>
