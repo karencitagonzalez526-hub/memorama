@@ -351,19 +351,20 @@
             color: #3f2e1c;
         }
 
-        @media (max-width: 600px) {
-            .memory-grid {
-                gap: 12px;
-                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            }
-            .word-card-content .word-text {
-                font-size: 0.9rem;
-            }
-            .image-card-content img {
-                max-width: 70px;
-                max-height: 70px;
-            }
-        }
+@media (max-width: 600px) {
+    .memory-grid {
+        gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));  ← 140px
+    }
+    .word-card-content .word-text {
+        font-size: 1rem;  ← 1rem
+    }
+    .image-card-content img {
+        max-width: 100px;   ← 100px
+        max-height: 100px;  ← 100px
+    }
+}
+        
     </style>
 </head>
 <body>
