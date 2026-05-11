@@ -360,8 +360,8 @@
         font-size: 1rem; /* ← Texto poquito más grande */
     }
     .image-card-content img {
-        max-width: 120px;  /* ← Era 95px, ahora 120px */
-        max-height: 120px; /* ← Era 95px, ahora 120px */
+        max-width: 130px;  /* ← Era 95px, ahora 130px */
+        max-height: 130px; /* ← Era 95px, ahora 130px */
     }
 }
     </style>
