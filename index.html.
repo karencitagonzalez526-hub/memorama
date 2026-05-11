@@ -354,14 +354,14 @@
         @media (max-width: 600px) {
     .memory-grid {
         gap: 12px;
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* ← Cartas un poco más anchas */
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
     }
     .word-card-content .word-text {
         font-size: 1rem; /* ← Texto poquito más grande */
     }
     .image-card-content img {
-        max-width: 130px;  /* ← Era 95px, ahora 130px */
-        max-height: 130px; /* ← Era 95px, ahora 130px */
+        max-width: 95px;  /* ← Era 130px, ahora 95px */
+        max-height: 95px; /* ← Era 130px, ahora 95px */
     }
 }
     </style>
