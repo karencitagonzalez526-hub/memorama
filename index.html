@@ -349,19 +349,17 @@
             padding: 14px;
             font-size: 0.75rem;
             color: #3f2e1c;
-        }
-
 @media (max-width: 600px) {
     .memory-grid {
         gap: 12px;
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));  ← 140px
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* ← Cartas un poco más anchas */
     }
     .word-card-content .word-text {
-        font-size: 1rem;  ← 1rem
+        font-size: 1rem; /* ← Texto poquito más grande */
     }
     .image-card-content img {
-        max-width: 100px;   ← 100px
-        max-height: 100px;  ← 100px
+        max-width: 120px;  /* ← Era 70px, ahora 120px */
+        max-height: 120px; /* ← Era 70px, ahora 120px */
     }
 }
         
